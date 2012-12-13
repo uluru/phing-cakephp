@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    PHPUnit config file.
+    @link http://www.phpunit.de/manual/3.6/ja/index.html
+-->
+<phpunit>
+    <filter>
+        <!-- Exclude directories for coverrage. -->
+        <blacklist>
+            <directory suffix=".php">bin</directory>
+            <directory suffix=".php">cakephp</directory>
+            <directory suffix=".php">*/Config/Migration</directory>
+            <directory suffix=".php">*/Config/Schema</directory>
+            <directory suffix=".php">*/Console/Templates</directory>
+            <directory suffix=".php">*/Lib</directory>
+            <directory suffix=".php">*/Plugin</directory>
+            <directory suffix=".php">*/Test</directory>
+            <directory suffix=".php">*/tmp</directory>
+            <directory suffix=".php">*/Vendor</directory>
+            <directory suffix=".php">*/webroot</directory>
+        </blacklist>
+    </filter>
+</phpunit>

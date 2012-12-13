@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    PHP_Codesniffer config file.
+    @link http://pear.php.net/package/PHP_CodeSniffer
+-->
+<ruleset name="Custom Standard">
+    <!--
+        Exclude sniff rule.
+        @link http://redmine.uluru-centos.com/projects/uluru-cakephp/wiki/Uluru-cakephp-dev-memo#PHP_CodeSniffer除外ルール
+        @see /usr/lib/php/pear/PHP/CodeSniffer/Standards/PSR1/Sniffs/Classes/ClassDeclarationSniff.php
+        @see /usr/lib/php/pear/PHP/CodeSniffer/Standards/PSR1/Sniffs/Files/SideEffectsSniff.php
+    -->
+    <rule ref="PSR2">
+        <exclude name="PSR1.Classes.ClassDeclaration"/>
+        <exclude name="PSR1.Files.SideEffects"/>
+    </rule>
+
+    <!-- Exclude file and directory. -->
+    <exclude-pattern>*database.php</exclude-pattern>
+    <exclude-pattern>*i18n.php</exclude-pattern>
+    <exclude-pattern>*core.php</exclude-pattern>
+    <exclude-pattern>*/Config/Migration/*</exclude-pattern>
+    <exclude-pattern>*/Config/Schema/*</exclude-pattern>
+    <exclude-pattern>*/Console/Templates/*</exclude-pattern>
+    <exclude-pattern>*/Lib/*</exclude-pattern>
+    <exclude-pattern>*/Plugin/*</exclude-pattern>
+    <exclude-pattern>*/tmp/*</exclude-pattern>
+    <exclude-pattern>*/Vendor/*</exclude-pattern>
+    <exclude-pattern>*/webroot/*</exclude-pattern>
+</ruleset>

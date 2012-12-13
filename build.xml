@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Phing build config file.
+    @link http://www.phing.info/
+-->
+<project name="name-of-project" default="build">
+    <!-- Properties -->
+    <property name="basedir" value="${phing.dir}" />
+    <property name="appdir"  value="${basedir}/app" />
+    <property name="logdir"  value="${basedir}/build/logs" />
+
+    <!-- Build -->
+    <target name="build"
+        depends="clean,prepare,prepare-caketest,caketest,phpcs,phpcpd,phpmd,phpdoc"/>
+
+    <!-- Build for local. Intended for usage on the command line before committing. -->
+    <target name="build-local"
+        depends="clean,prepare,caketest-local,phpcs-local,phpcpd-local,phpmd-local"/>
+
+    <!-- Clean up -->
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${logdir}"/>
+        <delete dir="${basedir}/build/coverage"/>
+        <delete dir="${basedir}/build/phpdoc"/>
+    </target>
+
+    <!-- Prepare -->
+    <target name="prepare" depends="clean" description="Prepare for build">
+        <mkdir dir="${logdir}"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/phpdoc"/>
+    </target>
+
+    <!-- Prepare CakePHP unit test -->
+    <target name="prepare-caketest" description="Prepare for CakePHP unit test">
+        <copy file="${appdir}/Config/core.php.testing"
+            tofile="${appdir}/Config/core.php" overwrite="true" />
+        <copy file="${appdir}/Config/database.php.testing"
+            tofile="${appdir}/Config/database.php" overwrite="true" />
+        <chmod file="${appdir}/tmp" mode="0777" />
+    </target>
+
+    <!-- CakePHP unit test with PHPUnit -->
+    <target name="caketest" description="Run CakePHP unit tests with PHPUnit">
+        <exec dir="${basedir}" executable="${basedir}/bin/cake" output="${logdir}/caketest.log">
+            <arg line="test" />
+            <arg line="--configuration=${basedir}/phpunit.xml" />
+            <arg line="--log-junit=${logdir}/phpunit.xml" />
+            <arg line="--coverage-html=${basedir}/build/coverage/" />
+            <arg line="--coverage-clover=${logdir}/coverage.xml" />
+            <arg line="app" />
+            <arg line="AllTests" />
+        </exec>
+    </target>
+    <target name="caketest-local" description="Run CakePHP unit tests with PHPUnit and print human readable output.">
+        <exec dir="${basedir}" executable="${basedir}/bin/cake" output="${logdir}/caketest.log">
+            <arg line="test" />
+            <arg line="--configuration=${basedir}/phpunit-coverage-text.xml" />
+            <arg line="app" />
+            <arg line="AllTests" />
+        </exec>
+    </target>
+
+    <!-- PHPCodeSniffer -->
+    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer.">
+        <exec dir="${basedir}" executable="phpcs" output="${logdir}/phpcs.log">
+            <arg line="--standard=${basedir}/phpcs.xml" />
+            <arg line="--report=checkstyle" />
+            <arg line="--report-file=${logdir}/phpcs.xml" />
+            <arg line="${appdir}" />
+        </exec>
+    </target>
+    <target name="phpcs-local" description="Find coding standard violations using PHP_CodeSniffer and print human readable output.">
+        <exec dir="${basedir}" executable="phpcs" output="${logdir}/phpcs.log">
+            <arg line="--standard=${basedir}/phpcs.xml" />
+            <arg line="${appdir}" />
+        </exec>
+    </target>
+
+    <!-- PHPMD -->
+    <target name="phpmd" description="Perform project mess detection using PHPMD">
+        <exec dir="${basedir}" executable="phpmd" output="${logdir}/phpmd.log">
+            <arg line="${appdir}" />
+            <arg line="xml" />
+            <arg line="${basedir}/phpmd-rule.xml" />
+            <arg line="--reportfile ${logdir}/phpmd.xml" />
+            <arg line="--exclude ${appdir}/Plugin,${appdir}/Config/Schema,${appdir}/Config/Migration" />
+            <arg line="--suffixes php,cpt" />
+        </exec>
+    </target>
+    <target name="phpmd-local" description="Perform project mess detection using PHPMD and print human readable output.">
+        <exec dir="${basedir}" executable="phpmd" output="${logdir}/phpmd.log">
+            <arg line="${appdir}" />
+            <arg line="text" />
+            <arg line="${basedir}/phpmd-rule.xml" />
+            <arg line="--exclude ${appdir}/Plugin,${appdir}/Config/Schema,${appdir}/Config/Migration" />
+            <arg line="--suffixes php,cpt" />
+        </exec>
+    </target>
+
+    <!-- PHPCPD -->
+    <target name="phpcpd" description="Perform project mess detection using PHPMD">
+        <exec dir="${basedir}" executable="phpcpd" output="${logdir}/phpcpd.log">
+            <arg line="--log-pmd ${logdir}/phpcpd.xml" />
+            <arg line="--exclude Config/Schema" />
+            <arg line="--exclude Config/Migration" />
+            <arg line="--exclude Plugin" />
+            <arg line="--exclude webroot" />
+            <arg line="--names *.php,*.cpt" />
+            <arg line="${appdir}" />
+        </exec>
+    </target>
+    <target name="phpcpd-local" description="Perform project mess detection using PHPMD">
+        <exec dir="${basedir}" executable="phpcpd" output="${logdir}/phpcpd.log">
+            <arg line="--exclude Config/Schema" />
+            <arg line="--exclude Config/Migration" />
+            <arg line="--exclude Plugin" />
+            <arg line="--exclude webroot" />
+            <arg line="--names *.php,*.cpt" />
+            <arg line="${appdir}" />
+        </exec>
+    </target>
+
+    <!-- PHPDocumentor -->
+    <target name="phpdoc" description="Generate Application Documentation using PHPDocumentor2">
+        <exec dir="${basedir}" executable="phpdoc" output="${logdir}/phpdoc.log">
+            <arg line="run" />
+            <arg line="-t ${basedir}/build/phpdoc" />
+            <arg line="-d ${appdir}" />
+            <arg line="-p" />
+        </exec>
+    </target>
+
+</project>
