@@ -4,7 +4,7 @@ phing-cakephp
 Introduction
 ------
 This is phing configs for CakePHP 2.x project.  
-Phing build test [CakePHP](http://cakephp.org/), check code quority (
+Phing build test [CakePHP](http://cakephp.org/), check code quality (
 [phpcs](https://github.com/squizlabs/PHP_CodeSniffer),
  [phpcpd](https://github.com/sebastianbergmann/phpcpd),
  [phpmd](https://github.com/manuelpichler/phpmd)
