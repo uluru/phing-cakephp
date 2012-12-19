@@ -6,7 +6,6 @@
 <ruleset name="Custom Standard">
     <!--
         Exclude sniff rule.
-        @link http://redmine.uluru-centos.com/projects/uluru-cakephp/wiki/Uluru-cakephp-dev-memo#PHP_CodeSniffer除外ルール
         @see /usr/lib/php/pear/PHP/CodeSniffer/Standards/PSR1/Sniffs/Classes/ClassDeclarationSniff.php
         @see /usr/lib/php/pear/PHP/CodeSniffer/Standards/PSR1/Sniffs/Files/SideEffectsSniff.php
     -->
