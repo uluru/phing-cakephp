@@ -45,7 +45,7 @@ Check your source, before you push. Results log are place to build/logs
     phing build-local
 
 ### Testing CakePHP only ###
-Only testing, exclude coverage caluculate.
+Only testing, exclude coverage calculate.
 
     app/Console/cake test app AllTests
     app/Console/cake test app Model/Foo
